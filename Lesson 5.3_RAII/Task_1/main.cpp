@@ -9,6 +9,9 @@ public:
 		arr = new int[size];
 		this->size = size;
 	}
+	smart_array(const smart_array&) = delete;
+	smart_array& operator=(const smart_array&) = delete;
+
 
 	void add_element(int a_element)
 	{
@@ -25,7 +28,7 @@ public:
 
 	int get_element(int g_element)
 	{
-		if (g_element < size && g_element >= 0)
+		if (g_element < count && g_element >= 0)
 			return arr[g_element];
 		else
 			throw std::domain_error("Запрашиваемый элемент не существует");		

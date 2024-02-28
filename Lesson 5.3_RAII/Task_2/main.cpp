@@ -10,6 +10,17 @@ public:
 		this->size = size;
 	}
 
+	smart_array(const smart_array& right)
+	{
+		size = right.size;
+		count = right.count;
+		arr = new int[size];
+		for (int i = 0; i < size; i++)
+		{
+			arr[i] = right.arr[i];
+		}
+	}
+
 	void add_element(int a_element)
 	{
 		if (count < size)
@@ -25,23 +36,28 @@ public:
 
 	int get_element(int g_element)
 	{
-		if (g_element < size && g_element >= 0)
+		if (g_element < count && g_element >= 0)
 			return arr[g_element];
 		else
 			throw std::domain_error("Запрашиваемый элемент не существует");
 	}
 
-	void operator = (const smart_array& right)
+	smart_array& operator = (const smart_array& right)
 	{
-		size = right.size;
-		delete[] arr;
-		arr = new int[size];
-		for (int i = 0; i < size; i++)
+		if (this != &right)
 		{
-			arr[i] = right.arr[i];
+			size = right.size;
+			count = right.count;
+			delete[] arr;
+			arr = new int[size];
+			for (int i = 0; i < size; i++)
+			{
+				arr[i] = right.arr[i];
+			}
 		}
+		return *this;
 	}
-
+	
 	~smart_array()
 	{
 		delete[] arr;
@@ -69,5 +85,5 @@ int main()
 
 	arr = new_array;
 
-
+	return 0;
 }
