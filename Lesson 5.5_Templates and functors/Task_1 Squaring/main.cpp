@@ -4,8 +4,8 @@
 template <class T>
 T squaring(T value) { return value * value; }
 
-template <>
-std::vector<int> squaring(std::vector<int> a)
+template <class T>
+std::vector<T> squaring(std::vector<T> a)
 {
 	for (auto& el : a)
 		el *= el;

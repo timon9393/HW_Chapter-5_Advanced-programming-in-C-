@@ -5,50 +5,40 @@ template<typename T>
 class functor
 {
 public:
-	functor(std::vector<T>& arr) : array(arr), counter{ 0 }, sum{ 0 } {};
 
-	void operator()()
+	void operator()(int num)
 	{
-		std::cout << "Sum = " << get_sum() << std::endl;
-		std::cout << "Count = " << get_count() << std::endl;
-	}
-
-	T get_sum()
-	{
-		for (const auto& el : array)
-		{
-			if (el % 3 == 0)
-				sum += el;
+		if (num % 3 == 0) {
+			sum += num;
+			counter++;
 		}
-		return sum;
 	}
 
-	int get_count()
-	{
-		for (const auto& el : array)
-		{
-			if (el % 3 == 0)
-				counter++;
-		}
-		return counter;
-	}
+	T get_sum() { return sum; }
+
+	int get_count() { return counter; }
+	
 	
 private:
-	int counter;
-	T sum;
-	std::vector<T> array;
+	int counter = 0;
+	T sum = 0;
 };
 
 int main()
 {
 	std::vector<int> arr{ 4, 1, 3, 6, 25, 54 };
-	functor<int> test(arr);
+	functor<int> test;
 
 	std::cout << "IN: ";
 	for (const auto& el : arr)
+	{
 		std::cout << el << " ";
+		test(el);
+	}		
 	std::cout << std::endl;
-	test();
+
+	std::cout << "[OUT]: get_sum() = " << test.get_sum() << std::endl;
+	std::cout << "[OUT]: get_count() = " << test.get_count() << std::endl;
 
 	return 0;
 }
