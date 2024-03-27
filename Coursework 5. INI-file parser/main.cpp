@@ -64,7 +64,7 @@ public:
 		}
 	}
 
-	template <typename T>
+	template<typename T>
 	T get_value(const std::string& section_key)
 	{
 		std::istringstream iss(section_key);
@@ -77,8 +77,7 @@ public:
 					throw std::runtime_error("Не найдено значение для переменной '" + key + "'");
 
 				T value;
-				std::getline(std::istringstream(data[section][key]), value);
-				return value;
+				return result(value, section, key);
 			}
 			else
 			{
@@ -93,33 +92,18 @@ public:
 			throw std::invalid_argument("Некорректный формат введённых данных!");
 	}
 
-	template<>
-	int get_value(const std::string& section_key)
+	template <typename T>
+	T result(T& value, const std::string& section, const std::string& key)
 	{
-		std::istringstream iss(section_key);
-		std::string section, key;
-		if (std::getline(iss, section, '.') && std::getline(iss, key))
-		{
-			if (data.find(section) != data.end() && data[section].find(key) != data[section].end())
-			{
-				if (data[section][key] == "empty")
-					throw std::runtime_error("Не найдено значение для переменной '" + key + "'");
+		std::istringstream(data[section][key]) >> value;
+		return value;
+	}
 
-				int value;
-				std::istringstream(data[section][key]) >> value;
-				return value;
-			}
-			else
-			{
-				std::string available_keys = "Доступные переменные в секции '" + section + "': ";
-				for (const auto& el : data[section])
-					available_keys += el.first + " ";
-
-				throw std::runtime_error("Не найдено значение для переменной '" + key + "'. " + available_keys);
-			}
-		}
-		else
-			throw std::invalid_argument("Некорректный формат введённых данных!");
+	template<>
+	std::string result(std::string& value, const std::string& section, const std::string& key)
+	{
+		std::getline(std::istringstream(data[section][key]), value);
+		return value;
 	}
 
 	~ini_parser()
